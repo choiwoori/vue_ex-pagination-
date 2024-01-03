@@ -4,7 +4,16 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { toRefs } from 'vue'
+
+interface Props{
+    theme?: string
+}
+
+const props = defineProps<Props>()
+const { theme } = toRefs(props)
+</script>
 
 <style lang="scss" scoped>
 .basic-layout{
