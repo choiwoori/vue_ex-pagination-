@@ -1,5 +1,5 @@
 <template>
-    <div class="basic-layout">
+    <div class="basic-layout" :layout-theme="theme">
         <slot></slot>
     </div>
 </template>
@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { toRefs } from 'vue'
 
-interface Props{
+interface Props {
     theme?: string
 }
 
@@ -16,7 +16,7 @@ const { theme } = toRefs(props)
 </script>
 
 <style lang="scss" scoped>
-.basic-layout{
+.basic-layout {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -24,7 +24,10 @@ const { theme } = toRefs(props)
     padding: 20px;
 
     background-color: $color-white-000;
-    border-radius: 24px;
-    
+    border-radius: 16px;
+
+    &[layout-theme='blue'] {
+        background-color: $color-blue-000;
+    }
 }
 </style>
