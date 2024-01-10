@@ -1,22 +1,42 @@
 <template>
     <div class="list">
         <div class="list__avatar">
-            <img src="" alt="" class="list__avatar__image">
+            <img src="/src/assets/images/user-img01.jpg" alt="" class="list__avatar__images" />
             <div class="list__avatar__text-box">
-                <span class="name">Marce</span>
-                <span class="duty">User Experience</span>
+                <span class="name">{{ data.userName }}</span>
+                <span class="duty">{{ data.userRole }}</span>
             </div>
         </div>
-        <div class="list__item"></div>
-        <div class="list__item"></div>
         <div class="list__item">
-            <div class="list__item__chip">Senior</div>
+            <BarChart />
+        </div>
+        <div class="list__item">
+            <BarChart />
+        </div>
+        <div class="list__item">
+            <div class="list__item__chip">{{ data.userSkill }}</div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import BarChart from '@components/atoms/chart/BarChart.vue'
+import { toRefs } from 'vue'
 
+interface List {
+    userName: string
+    userRole: string
+    userResumeScore: number
+    userSkillMatch: number
+    userSkill: string
+}
+
+interface Props {
+    data: List
+}
+
+const props = defineProps<Props>()
+const { data } = toRefs(props)
 </script>
 
 <style lang="scss" scoped>
@@ -33,5 +53,59 @@
 
     background-color: rgba($color-white-200, 0.1);
     border-radius: 16px;
+
+    &__avatar{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        width: 25%;
+
+        gap: 8px;
+
+        &__images{
+            width: 44px;
+            height: 44px;
+
+            border-radius: 50%;
+            border: 1px solid rgba($color-white-200, 0.3);
+        }
+
+        &__text-box{
+            display: flex;
+            flex-direction: column;
+
+            gap: 4px;
+
+            .name{
+                color: $color-black-900;
+                font-weight: 500;
+            }
+
+            .duty{
+                font-size: 14px;
+                font-weight: 300;
+                color: $color-white-200;
+            }
+        }
+    }
+    &__item{
+        width: 25%;
+
+        &__chip{
+            display: flex;
+            align-items: center;
+            justify-content:center;
+
+            width: 60px;
+            height: 12px;
+            
+            padding: 8px;
+
+            color: $color-blue-000;
+            background-color: rgba($color-blue-000, 0.1);
+            border-radius: 12px;
+        }
+    }
 }
 </style>
