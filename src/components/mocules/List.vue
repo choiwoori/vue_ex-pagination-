@@ -8,13 +8,14 @@
             </div>
         </div>
         <div class="list__item">
-            <BarChart />
+            <BarChart :data="data.userResumeScore" />
         </div>
         <div class="list__item">
-            <BarChart />
+            <BarChart :data="userSkillMatch" />
         </div>
         <div class="list__item">
-            <div class="list__item__chip">{{ data.userSkill }}</div>
+            <div v-if="data.userSkill ==='Senior'" class="list__item__chip">{{ data.userSkill }}</div>
+            <div v-if="data.userSkill ==='Junior'" class="list__item__chip junior">{{ data.userSkill }}</div>
         </div>
     </div>
 </template>
@@ -105,6 +106,11 @@ const { data } = toRefs(props)
             color: $color-blue-000;
             background-color: rgba($color-blue-000, 0.1);
             border-radius: 12px;
+
+            &.junior{
+                color: orange;
+                background-color: rgba(orange, 0.1);
+            }
         }
     }
 }

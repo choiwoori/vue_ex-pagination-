@@ -29,14 +29,17 @@
             </div>
             <div class="notice__body__list-box">
                 <NoticeList v-for="item in tableData" :key="item.userName" :data="item"/>
-            
             </div>
+        </div>
+        <div class="notice__footer">
+            <Pagination />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import NoticeList from '@components/mocules/List.vue'
+import Pagination from '@components/mocules/common/Pagination.vue'
 import { ref } from 'vue'
 
 interface List {
@@ -46,6 +49,11 @@ interface List {
     userSkillMatch: number
     userSkill: string
 }
+
+// 페이지네이션 기능 구현에 필요한 데이터
+cosnt tableData = ref<List[]>([])
+const selectePage = ref<number>(1) // 첫페이지 초기값을 1로 세팅
+const totalPage = ref<number>(0) // totalData의 개수에 따라 페이지네이션 ui에 그려지는 숫자 리스트
 
 const tableData = ref<List[]>([
     {
@@ -196,7 +204,7 @@ const tableData = ref<List[]>([
                 justify-content: flex-start;
 
                 width: 100%;
-                height: calc(100% - 50px);
+                height: calc(100% - 80px);
 
                 gap: 12px;
 
