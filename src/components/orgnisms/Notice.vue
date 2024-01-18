@@ -41,6 +41,7 @@
 import NoticeList from '@components/mocules/List.vue'
 import Pagination from '@components/mocules/common/Pagination.vue'
 import { ref } from 'vue'
+import { table } from 'console'
 
 interface List {
     userName: string
@@ -51,61 +52,88 @@ interface List {
 }
 
 // 페이지네이션 기능 구현에 필요한 데이터
-cosnt tableData = ref<List[]>([])
-const selectePage = ref<number>(1) // 첫페이지 초기값을 1로 세팅
-const totalPage = ref<number>(0) // totalData의 개수에 따라 페이지네이션 ui에 그려지는 숫자 리스트
+const tableData = ref<List[]>([])
+const selectedPage = ref<number>(1) // 0페이지라는 UI는 없으니까, 초기값을 1로 세팅
+const totalPage = ref<number>(0) // tableData의 개수에 따라 페이지네이션 UI에 그려지는 숫자 리스트를 말합니다.
+const totalCount = ref<number | undefined>()
+const limit = ref<number>(10) // 테이블 UI에 보여지는 데이터 개수
 
-const tableData = ref<List[]>([
-    {
-        userName: 'Marco',
-        userRole: 'FrontEnd Daveloper',
-        userResumeScore: 89,
-        userSkillMatch: 80,
-        userSkill: 'Junior',
-    },
-    {
-        userName: 'Jeff',
-        userRole: 'BackEnd Daveloper',
-        userResumeScore: 72,
-        userSkillMatch: 65,
-        userSkill: 'Senior',
-    },
-    {
-        userName: 'Eric',
-        userRole: 'User Experience',
-        userResumeScore: 90,
-        userSkillMatch: 91,
-        userSkill: 'Senior',
-    },
-    {
-        userName: 'Marry',
-        userRole: 'User Interface',
-        userResumeScore: 56,
-        userSkillMatch: 43,
-        userSkill: 'Junior',
-    },
-    {
-        userName: 'John',
-        userRole: 'Project Manager',
-        userResumeScore: 100,
-        userSkillMatch: 100,
-        userSkill: 'Senior',
-    },
-    {
-        userName: 'Maxwell',
-        userRole: 'FrontEnd Daveloper',
-        userResumeScore: 50,
-        userSkillMatch: 50,
-        userSkill: 'Junior',
-    },
-    {
-        userName: 'Poloe',
-        userRole: 'BackEnd Daveloper',
-        userResumeScore: 80,
-        userSkillMatch: 76,
-        userSkill: 'Senior',
+const getData = () => {
+    tableData.value = [
+        {
+            userName: 'Marco',
+            userRole: 'FrontEnd Daveloper',
+            userResumeScore: 89,
+            userSkillMatch: 80,
+            userSkill: 'Junior',
+        },
+        {
+            userName: 'Jeff',
+            userRole: 'BackEnd Daveloper',
+            userResumeScore: 72,
+            userSkillMatch: 65,
+            userSkill: 'Senior',
+        },
+        {
+            userName: 'Eric',
+            userRole: 'User Experience',
+            userResumeScore: 90,
+            userSkillMatch: 91,
+            userSkill: 'Senior',
+        },
+        {
+            userName: 'Marry',
+            userRole: 'User Interface',
+            userResumeScore: 56,
+            userSkillMatch: 43,
+            userSkill: 'Junior',
+        },
+        {
+            userName: 'John',
+            userRole: 'Project Manager',
+            userResumeScore: 100,
+            userSkillMatch: 100,
+            userSkill: 'Senior',
+        },
+        {
+            userName: 'Maxwell',
+            userRole: 'FrontEnd Daveloper',
+            userResumeScore: 50,
+            userSkillMatch: 50,
+            userSkill: 'Junior',
+        },
+        {
+            userName: 'Poloe',
+            userRole: 'BackEnd Daveloper',
+            userResumeScore: 80,
+            userSkillMatch: 76,
+            userSkill: 'Senior',
+        }
+    ]
+    // totalCount: 총 데이터 리스트 개수
+    // pageCount: 화면에 나타날 페이지 개수
+    // limit: 한 페이지당 나타낼 데이터 개수
+    totalCount.value = tableData.value !== undefined ? tableData.value.length : 0
+    totalPage.value = Math.ceil(totalCount.value / limit.value) !== 0 ? Math.ceil(totalCount.value / limit.value) : 1
+    // 0.9 => 1 / 0.4 =>  / 만약에 0이면 "조회 가능한 데이터가 없습니다." UI 발생 => 페이지네이션 숫자는 1로 보여야겠죠?
+    tableData.value = disassemble(selectedPage.value - 1, tableData.value, limit.value)
+
+}
+
+const disassemble = (index: number, data: List[], size: number) => {
+    const res = new Array()
+
+    for (let i = 0; i < data.length; i += size) {
+        res.push(data.slice(i, i + size)) // 11개의 데이터가 있을 때, limit 값이 현재 10이므로 10개 1개 이런 식으로 배열이 쪼개져야겠죠?
     }
-])
+    console.log(res)
+    return res[index]
+}
+
+onMounted(() => {
+    getData()
+})
+
 </script>
 
 <style lang="scss" scoped>
